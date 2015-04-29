@@ -1,0 +1,68 @@
+/*USED BY PLUGIN*/
+
+.sticky-container {
+  display: relative;
+}
+
+.original-element.replaced {
+  visibility: hidden;
+}
+
+.replacement-element {
+  position: absolute;
+}
+
+.replacement-element.replaced {
+  display: none;
+}
+
+.left-static, .right-static, .scroll-area {
+  float: left;
+}
+
+.left-static, .right-static {
+
+}
+
+.scroll-area {
+  position: relative;
+  overflow-x: scroll;
+  width: 200px;
+}
+
+/* JUST USED TO FAKE A TABLE*/
+#fakegrid {
+  position: absolute;
+  top: 300px;
+  left: 300px;
+  border: 1px solid black;
+}
+
+.sticky-top {
+  background-color: yellow;
+}
+
+.sticky-bottom {
+  background-color: purple;
+}
+
+.sticky-left {
+  background-color: gray;
+}
+
+.sticky-right {
+  background-color: green;
+}
+
+.row {
+  border: 1px solid blue;
+  clear: both;
+  white-space: nowrap;
+}
+
+.col {
+  border: 1px solid red;
+  display: inline-block;
+  width: 50px;
+  height: 50px;
+}
