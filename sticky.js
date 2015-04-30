@@ -200,4 +200,21 @@
     })
   }
 
+  $.fn.immobile = function(base) {
+    return this.each(function(){
+      var $this = $(this),
+          clone = $this.clone(),
+          offset = $this.offset(),
+          top = offset.top,
+          left = offset.left
+      $this.css('visibility', 'hidden')
+      $('body').append(clone)
+      clone.addClass('clone')
+           .css({
+              top: top,
+              left: left
+           })
+    })
+  }
+
 }(jQuery, _))

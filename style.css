@@ -30,6 +30,22 @@
   width: 200px;
 }
 
+.immobile {
+  display: block
+}
+
+.immobile.clone {
+  position: absolute;
+}
+
+.collapseable {
+  display: none;
+}
+
+.in .collapseable {
+  display: block;
+}
+
 /* JUST USED TO FAKE A TABLE*/
 * {
   box-sizing: border-box;
