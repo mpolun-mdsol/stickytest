@@ -5,7 +5,7 @@
   // * every 10ms check if sticky elements are visible
   // * insert clone of fixed elements with position:absolute and top:/bottom:/left:/right: 0 set
   var STICKY_DIRECTIONS = ['top', 'bottom', 'left', 'right'],
-      STICKY_CHECK_INTERVAL = 500, // TODO use 10ms
+      STICKY_CHECK_INTERVAL = 500, // TODO use 10ms or maybe use requestAnimationFrame?
       STICKY_AXIS = {
         vertical: 'v',
         horizontal: 'h'
@@ -31,7 +31,7 @@
     );
   }
 
-  function StickyElement(elem, $container) {
+  function StickyElement(elem, $container, options) {
     this.$elem = $(elem)
     this.$container = $container
     this.$clone = this.clone()
@@ -39,7 +39,7 @@
     this.replaced = false
     this.direction = this.getDirection()
     this.axis = this.getAxis()
-
+    this.options = options
   }
 
   StickyElement.prototype.clone = function() {
@@ -126,7 +126,7 @@
     switch (this.direction) {
       case 'top': return clamp(scrollTop() - offsetTop(this.$elem), 0, cheight - eheight)
       case 'left': return clamp(scrollLeft() - offsetLeft(this.$elem), 0, cwidth - ewidth)
-      case 'bottom': return clamp(scrollBottom() - offsetBottom(this.$elem), 0, cheight - eheight)
+      case 'bottom': return clamp(scrollBottom() - offsetBottom(this.$elem) + this.options.paddingBottom, 0, cheight - eheight)
       case 'right': return clamp(scrollRight() - offsetRight(this.$elem), 0, cwidth - ewidth)
     }
   }
@@ -149,12 +149,19 @@
     if(this.needsPositioning()) {
       this.position()
     }
-
   }
 
-  function StickyContainer($container) {
+  var defaultOptions = {
+    paddingTop: 0,
+    paddingBottom: 0,
+    paddingLeft: 0,
+    paddingRight: 0
+  }
+
+  function StickyContainer($container, options) {
     this.$container = $container;
     this.stickyElements = [];
+    this.options = _.extend({}, defaultOptions, options)
   }
 
   StickyContainer.prototype.init = function() {
@@ -174,7 +181,7 @@
   StickyContainer.prototype.wrappedElements = function(selector) {
     var elements = this.$container.find(selector).toArray()
     return _.map(elements, function(elem){
-      return new StickyElement(elem, this.$container)
+      return new StickyElement(elem, this.$container, this.options)
     }, this)
   }
 
@@ -184,10 +191,10 @@
     })
   }
 
-  $.fn.sticky = function sticky() {
+  $.fn.sticky = function sticky(options) {
     return this.each(function(){
       var $this = $(this),
-          container = new StickyContainer($this);
+          container = new StickyContainer($this, options);
       container.init();
       $(this).data('sticky', container);
     })

@@ -559,7 +559,13 @@
     </div>
   </div>
 
-    <script>$('#fakegrid').sticky()</script>
+  <div class="toolbar">
+    TOOLBAR
+  </div>
+
+  <script>$('#fakegrid').sticky({
+    paddingBottom: $('.toolbar').outerHeight()
+  })</script>
 
 </body>
 </html>
