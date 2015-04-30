@@ -5,11 +5,23 @@
   // * every 10ms check if sticky elements are visible
   // * insert clone of fixed elements with position:absolute and top:/bottom:/left:/right: 0 set
   var STICKY_DIRECTIONS = ['top', 'bottom', 'left', 'right'],
-      STICKY_CHECK_INTERVAL = 500, // TODO use 10ms or maybe use requestAnimationFrame?
+      STICKY_CHECK_INTERVAL = 16,
       STICKY_AXIS = {
         vertical: 'v',
         horizontal: 'h'
       }
+
+  function loop(fn) {
+    if(window.requestAnimationFrame) {
+      function looper() {
+        fn()
+        window.requestAnimationFrame(looper)
+      }
+      window.requestAnimationFrame(looper)
+    } else {
+      setInterval(fn, STICKY_CHECK_INTERVAL)
+    }
+  }
 
   function elemInViewportX(elem) {
     var rect = elem[0].getBoundingClientRect(),
@@ -167,9 +179,9 @@
   StickyContainer.prototype.init = function() {
     this.$container.addClass('sticky-container');
     this.getStickyElements()
-    setInterval(_.bind(function(){
+    loop(_.bind(function(){
       this.update()
-    }, this), STICKY_CHECK_INTERVAL)
+    }, this))
   }
 
   StickyContainer.prototype.getStickyElements = function() {
