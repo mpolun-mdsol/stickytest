@@ -111,12 +111,23 @@
     return $(document).width() - elem.offset().left - elem.width()
   }
 
+  function clamp(val, min, max) {
+    return Math.min(
+        Math.max(val, min),
+        max
+      )
+  }
+
   StickyElement.prototype.getOffset = function() {
+    var eheight = this.$elem.height(),
+        ewidth = this.$elem.width(),
+        cheight = this.$container.height(),
+        cwidth = this.$container.width()
     switch (this.direction) {
-      case 'top': return Math.max(0, scrollTop() - offsetTop(this.$elem))
-      case 'left': return Math.max(0, scrollLeft() - offsetLeft(this.$elem))
-      case 'bottom': return Math.max(0, scrollBottom() - offsetBottom(this.$elem))
-      case 'right': return Math.max(0, scrollRight() - offsetRight(this.$elem))
+      case 'top': return clamp(scrollTop() - offsetTop(this.$elem), 0, cheight - eheight)
+      case 'left': return clamp(scrollLeft() - offsetLeft(this.$elem), 0, cwidth - ewidth)
+      case 'bottom': return clamp(scrollBottom() - offsetBottom(this.$elem), 0, cheight - eheight)
+      case 'right': return clamp(scrollRight() - offsetRight(this.$elem), 0, cwidth - ewidth)
     }
   }
 
@@ -134,7 +145,6 @@
   StickyElement.prototype.update = function() {
     if(this.needsReplace()) {
       this.replace()
-      console.log('replacing', this)
     }
     if(this.needsPositioning()) {
       this.position()

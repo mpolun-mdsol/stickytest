@@ -21,7 +21,7 @@
 }
 
 .left-static, .right-static {
-
+  position: relative;
 }
 
 .scroll-area {
@@ -33,7 +33,7 @@
 /* JUST USED TO FAKE A TABLE*/
 #fakegrid {
   position: absolute;
-  top: 300px;
+  top: 800px;
   left: 300px;
   border: 1px solid black;
 }
